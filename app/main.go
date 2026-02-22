@@ -2,8 +2,10 @@ package main
 
 import (
 	"sharedup/app/src/helpers"
+	logInDependencies "sharedup/app/src/login/infraestructure/dependencies"
+	logInRoutes "sharedup/app/src/login/infraestructure/routes"
 	registerDependencies "sharedup/app/src/register/infraestructure/dependencies"
-	registerRoutes"sharedup/app/src/register/infraestructure/routes"
+	registerRoutes "sharedup/app/src/register/infraestructure/routes"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,11 +13,13 @@ import (
 func main(){
 
 	registerDependencies.InitDependencies()
+	logInDependencies.InitDependencies()
 
 	r := gin.Default()
 	helpers.InitCORS(r)
 
 	registerRoutes.Routes(r)
+	logInRoutes.Routes(r)
 
 	r.Run(":8081")
 

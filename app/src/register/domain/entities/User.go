@@ -7,7 +7,7 @@ type User struct {
     Name     string `json:"name" validate:"required"`
     Email    string `json:"email" validate:"required,email"`
     Password string `json:"password" validate:"required,min=8"`
-	Career string  `json:"career" validate:"required,career"`
+	Career string `json:"career" validate:"required"` 
 }
 
 //Mandar a llamar en el controller
