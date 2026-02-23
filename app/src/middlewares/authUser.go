@@ -12,7 +12,7 @@ import (
 var jwtKey = []byte("encryptky0")
 
 type Claims struct {
-	IdUser int `json:"iduser"`
+	UserID int `json:"user_id"`
 	jwt.StandardClaims
 }
 
@@ -46,9 +46,9 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		log.Println("Token válido, User ID:", claims.IdUser)
+		log.Println("Token válido, User ID:", claims.UserID)
 
-		ctx.Set("user_id", claims.IdUser)
+		ctx.Set("user_id", claims.UserID)
 		ctx.Next()
 	}
 }
