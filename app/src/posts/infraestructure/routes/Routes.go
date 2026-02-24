@@ -17,4 +17,7 @@ func RoutesPost(router *gin.Engine) {
 	routes.POST("/",middlewares.AuthMiddleware(),create)
 	routes.PUT("/:id", middlewares.AuthMiddleware(), update)
 	routes.DELETE("/:id", middlewares.AuthMiddleware(), delete)
+
+	wsHandler := dependencies.GetWebSocketHandler()
+	router.GET("/ws/posts", wsHandler.Handle)
 }
