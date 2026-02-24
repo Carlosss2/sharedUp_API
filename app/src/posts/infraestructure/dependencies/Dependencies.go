@@ -24,3 +24,15 @@ func GetCreatePostController() *controllers.CreatePostController{
 	caseCreate := usecases.NewCreatePostUseCase(&mySQL)
 	return controllers.NewCreatePostController(caseCreate)
 }
+
+// nuevas implementaciones el update y el delete
+
+func GetUpdatePostController() *controllers.UpdatePostController {
+	caseUpdate := usecases.NewUpdatePostUseCase(&mySQL)
+	return controllers.NewUpdatePostController(caseUpdate)
+}
+
+func GetDeletePostController() *controllers.DeletePostController {
+	caseDelete := usecases.NewDeletePostUseCase(&mySQL)
+	return controllers.NewDeletePostController(caseDelete)
+}
