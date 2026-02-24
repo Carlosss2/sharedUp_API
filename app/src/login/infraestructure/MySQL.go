@@ -17,7 +17,7 @@ func NewMySQL(db *sql.DB) *MySQL {
 
 func (mysql *MySQL) LogIn(email string) (entities.UserWithPassword, error) {
 	query := `
-		SELECT iduser, name, email, password,career
+		SELECT iduser, name, email, passwordHash,career
 		FROM users
 		WHERE email = ?
 	`
