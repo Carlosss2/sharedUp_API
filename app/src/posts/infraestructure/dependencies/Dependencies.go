@@ -55,3 +55,8 @@ func GetGetAllPostController() *controllers.GetAllPostController {
 	caseGetAll := usecases.NewGetAllPostUseCase(&mySQL)
 	return controllers.NewGetAllPostController(caseGetAll)
 }
+
+func GetGetPostByUserController() *controllers.GetPostByUserController {
+	caseByUser := usecases.NewGetPostByUserUseCase(&mySQL)
+	return controllers.NewGetPostByUserController(caseByUser)
+}
