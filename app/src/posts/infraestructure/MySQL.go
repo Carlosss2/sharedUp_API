@@ -112,3 +112,37 @@ func (mysql *MySQL) GetByUser(idUser int) ([]entities.PostResponse, error) {
 
 	return posts, nil
 }
+
+func (mysql *MySQL) IncrementLike(postID int) error {
+
+	query := "UPDATE posts SET like_count = like_count + 1 WHERE idposts = ?"
+
+	result, err := mysql.DB.Exec(query, postID)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		return fmt.Errorf("publicacion no encontrada")
+	}
+
+	return nil
+}
+
+func (mysql *MySQL) IncrementDislike(postID int) error {
+
+	query := "UPDATE posts SET dislike_count = dislike_count + 1 WHERE idposts = ?"
+
+	result, err := mysql.DB.Exec(query, postID)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		return fmt.Errorf("publicacion no encontrada")
+	}
+
+	return nil
+}

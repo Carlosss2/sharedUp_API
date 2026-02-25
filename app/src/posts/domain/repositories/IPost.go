@@ -8,4 +8,7 @@ type IPostRepository interface {
 	Delete(id int, idUser int) error
 	GetAll() ([]entities.PostResponse, error)
 	GetByUser(idUser int) ([]entities.PostResponse, error)
+	
+	IncrementLike(postID int) error
+	IncrementDislike(postID int) error
 }

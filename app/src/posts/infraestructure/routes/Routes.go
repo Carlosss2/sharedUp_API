@@ -16,11 +16,17 @@ func RoutesPost(router *gin.Engine) {
 	getAll := dependencies.GetGetAllPostController().GetAll
 	getByUser := dependencies.GetGetPostByUserController().GetByUser
 
+	like := dependencies.GetIncrementLikeController().Increment
+	dislike := dependencies.GetIncrementDislikeController().Increment
+
 	routes.POST("/",middlewares.AuthMiddleware(),create)
 	routes.PUT("/:id", middlewares.AuthMiddleware(), update)
 	routes.DELETE("/:id", middlewares.AuthMiddleware(), delete)
 	routes.GET("/", middlewares.AuthMiddleware(), getAll)
 	routes.GET("/me", middlewares.AuthMiddleware(), getByUser)
+
+	routes.PUT("/:id/like", middlewares.AuthMiddleware(), like)
+	routes.PUT("/:id/dislike", middlewares.AuthMiddleware(), dislike)
 	
 	wsHandler := dependencies.GetWebSocketHandler()
 	router.GET("/ws/posts", wsHandler.Handle)
