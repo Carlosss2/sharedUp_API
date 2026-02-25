@@ -13,8 +13,13 @@ func RoutesPost(router *gin.Engine) {
 	create := dependencies.GetCreatePostController().Create
 	update := dependencies.GetUpdatePostController().Update
 	delete := dependencies.GetDeletePostController().Delete
+	getAll := dependencies.GetGetAllPostController().GetAll
 
 	routes.POST("/",middlewares.AuthMiddleware(),create)
 	routes.PUT("/:id", middlewares.AuthMiddleware(), update)
 	routes.DELETE("/:id", middlewares.AuthMiddleware(), delete)
+	routes.GET("/", middlewares.AuthMiddleware(), getAll)
+	
+	wsHandler := dependencies.GetWebSocketHandler()
+	router.GET("/ws/posts", wsHandler.Handle)
 }

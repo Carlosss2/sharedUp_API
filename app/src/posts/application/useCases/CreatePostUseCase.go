@@ -6,12 +6,29 @@ import (
 )
 
 type CreatePostUseCase struct {
-	repo repositories.IPostRepository
+	repo     repositories.IPostRepository
+	notifier repositories.IPostNotifier
 }
 
-func NewCreatePostUseCase(repo repositories.IPostRepository)*CreatePostUseCase{
-	return &CreatePostUseCase{repo: repo}
+func NewCreatePostUseCase(
+	repo repositories.IPostRepository,
+	notifier repositories.IPostNotifier,
+) *CreatePostUseCase {
+	return &CreatePostUseCase{
+		repo:     repo,
+		notifier: notifier,
+	}
 }
-func(uc *CreatePostUseCase) Execute(p entities.Post) error{
- return uc.repo.Save(p)
+
+func (uc *CreatePostUseCase) Execute(p entities.Post) error {
+
+	err := uc.repo.Save(p)
+	if err != nil {
+		return err
+	}
+
+	// Notificar evento en tiempo real
+	uc.notifier.NotifyPostCreated(p)
+
+	return nil
 }
