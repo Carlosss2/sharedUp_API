@@ -50,3 +50,34 @@ func (mysql *MySQL) Delete(id int, idUser int) error {
 	}
 	return nil
 }
+
+func (mysql *MySQL) GetAll() ([]entities.PostResponse, error) {
+
+	query := "SELECT idposts, title, text, like_count, dislike_count, created_at FROM posts ORDER BY idposts DESC"
+
+	rows, err := mysql.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var posts []entities.PostResponse
+
+	for rows.Next() {
+		var post entities.PostResponse
+		err := rows.Scan(
+			&post.Id,
+			&post.Title,
+			&post.Text,
+			&post.LikeCount,
+			&post.DisLikeCount,
+			&post.Date,
+		)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
+	return posts, nil
+}

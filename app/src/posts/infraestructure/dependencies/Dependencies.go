@@ -50,3 +50,8 @@ func GetDeletePostController() *controllers.DeletePostController {
 	caseDelete := usecases.NewDeletePostUseCase(&mySQL)
 	return controllers.NewDeletePostController(caseDelete)
 }
+
+func GetGetAllPostController() *controllers.GetAllPostController {
+	caseGetAll := usecases.NewGetAllPostUseCase(&mySQL)
+	return controllers.NewGetAllPostController(caseGetAll)
+}
