@@ -60,3 +60,13 @@ func GetGetPostByUserController() *controllers.GetPostByUserController {
 	caseByUser := usecases.NewGetPostByUserUseCase(&mySQL)
 	return controllers.NewGetPostByUserController(caseByUser)
 }
+
+func GetIncrementLikeController() *controllers.IncrementLikeController {
+	caseLike := usecases.NewIncrementLikeUseCase(&mySQL)
+	return controllers.NewIncrementLikeController(caseLike)
+}
+
+func GetIncrementDislikeController() *controllers.IncrementDislikeController {
+	caseDislike := usecases.NewIncrementDislikeUseCase(&mySQL)
+	return controllers.NewIncrementDislikeController(caseDislike)
+}
