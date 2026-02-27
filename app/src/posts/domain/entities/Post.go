@@ -16,4 +16,7 @@ type PostResponse struct{
 	LikeCount int `json:"like_count"`
 	DisLikeCount int `json:"dislike_count"`
 	Date string `json:"created_at"`
+	IdUser       int    `json:"iduser"`
+	UserName     string `json:"user_name"`
+	UserCareer   string `json:"user_career"`
 }

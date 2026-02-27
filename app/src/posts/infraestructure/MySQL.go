@@ -53,7 +53,21 @@ func (mysql *MySQL) Delete(id int, idUser int) error {
 
 func (mysql *MySQL) GetAll() ([]entities.PostResponse, error) {
 
-	query := "SELECT idposts, title, text, like_count, dislike_count, created_at FROM posts ORDER BY idposts DESC"
+	query := `
+	SELECT 
+		p.idposts,
+		p.title,
+		p.text,
+		p.like_count,
+		p.dislike_count,
+		p.created_at,
+		u.iduser,
+		u.name,
+		u.career
+	FROM posts p
+	INNER JOIN users u ON p.iduser = u.iduser
+	ORDER BY p.idposts DESC
+	`
 
 	rows, err := mysql.DB.Query(query)
 	if err != nil {
@@ -72,6 +86,9 @@ func (mysql *MySQL) GetAll() ([]entities.PostResponse, error) {
 			&post.LikeCount,
 			&post.DisLikeCount,
 			&post.Date,
+			&post.IdUser,
+			&post.UserName,
+			&post.UserCareer,
 		)
 		if err != nil {
 			return nil, err
