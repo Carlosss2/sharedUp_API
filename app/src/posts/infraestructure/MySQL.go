@@ -14,13 +14,21 @@ func NewMySQL(db *sql.DB) *MySQL{
 	return &MySQL{DB:db}
 }
 
-func (mysql *MySQL) Save(p entities.Post) error{
+func (mysql *MySQL) Save(p entities.Post) (int64, error) {
+
 	query := "INSERT INTO posts (title,text,like_count,dislike_count,iduser) VALUES(?,?,?,?,?)"
-	_, err := mysql.DB.Exec(query,p.Title,p.Text,p.LikeCount,p.DisLikeCount,p.IdUser)
-	 if err != nil {
-            return fmt.Errorf("[MySQL] Error al guardar la publicacion: %w", err)
-        }
-        return nil
+
+	result, err := mysql.DB.Exec(query,p.Title,p.Text,p.LikeCount,p.DisLikeCount,p.IdUser)
+	if err != nil {
+		return 0, fmt.Errorf("[MySQL] Error al guardar la publicacion: %w", err)
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
 
 func (mysql *MySQL) Update(p entities.Post) error {
@@ -162,4 +170,39 @@ func (mysql *MySQL) IncrementDislike(postID int) error {
 	}
 
 	return nil
+}
+
+func (mysql *MySQL) GetByID(id int64) (entities.PostResponse, error) {
+
+	query := `
+	SELECT 
+		p.idposts,
+		p.title,
+		p.text,
+		p.like_count,
+		p.dislike_count,
+		p.created_at,
+		u.iduser,
+		u.name,
+		u.career
+	FROM posts p
+	INNER JOIN users u ON p.iduser = u.iduser
+	WHERE p.idposts = ?
+	`
+
+	var post entities.PostResponse
+
+	err := mysql.DB.QueryRow(query, id).Scan(
+		&post.Id,
+		&post.Title,
+		&post.Text,
+		&post.LikeCount,
+		&post.DisLikeCount,
+		&post.Date,
+		&post.IdUser,
+		&post.UserName,
+		&post.UserCareer,
+	)
+
+	return post, err
 }

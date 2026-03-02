@@ -22,13 +22,19 @@ func NewCreatePostUseCase(
 
 func (uc *CreatePostUseCase) Execute(p entities.Post) error {
 
-	err := uc.repo.Save(p)
+	id, err := uc.repo.Save(p)
 	if err != nil {
 		return err
 	}
 
-	// Notificar evento en tiempo real
-	uc.notifier.NotifyPostCreated(p)
+	// Obtener post completo
+	postComplete, err := uc.repo.GetByID(id)
+	if err != nil {
+		return err
+	}
+
+	// Notificar con datos completos
+	uc.notifier.NotifyPostCreated(postComplete)
 
 	return nil
 }

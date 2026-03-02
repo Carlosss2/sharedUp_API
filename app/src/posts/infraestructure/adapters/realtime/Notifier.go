@@ -13,7 +13,7 @@ func NewPostNotifier(hub *Hub) *PostNotifier {
 	return &PostNotifier{hub: hub}
 }
 
-func (p *PostNotifier) NotifyPostCreated(post entities.Post) {
+func (p *PostNotifier) NotifyPostCreated(post entities.PostResponse) {
 
 	event := map[string]interface{}{
 		"type": "Nueva Publicacion",
